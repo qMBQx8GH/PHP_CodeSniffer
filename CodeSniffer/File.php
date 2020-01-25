@@ -632,6 +632,11 @@ class PHP_CodeSniffer_File
         }
 
         $this->_tokens   = self::tokenizeString($contents, $tokenizer, $this->eolChar);
+        $this->_tokens[] = array(
+                            'content' => '',
+                            'code'    => T_FILE_END,
+                            'type'    => 'T_FILE_END',
+                           );
         $this->numTokens = count($this->_tokens);
 
         // Check for mixed line endings as these can cause tokenizer errors and we
@@ -649,10 +654,12 @@ class PHP_CodeSniffer_File
         }
 
         if (PHP_CODESNIFFER_VERBOSITY > 0) {
-            if ($this->numTokens === 0) {
-                $numLines = 0;
-            } else {
-                $numLines = $this->_tokens[($this->numTokens - 1)]['line'];
+            $numLines = 0;
+            for ($i = $this->numTokens; $i > 0; $i--) {
+                if (isset($this->_tokens[($i - 1)]['line'])) {
+                    $numLines = $this->_tokens[($i - 1)]['line'];
+                    break;
+                }
             }
 
             echo "[$this->numTokens tokens in $numLines lines]... ";

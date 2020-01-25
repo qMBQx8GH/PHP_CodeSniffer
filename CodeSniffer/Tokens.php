@@ -100,6 +100,7 @@ if (defined('T_FINALLY') === false) {
     define('T_FINALLY', 1059);
 }
 
+define('T_FILE_END', 2020);
 /**
  * The Tokens class contains weightings for tokens based on their
  * probability of occurrence in a file.
